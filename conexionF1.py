@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 import requests
+#import datetime
 
 def conectar_a_mysql(host_name, user_name, user_password, db_name,port):
     connection = None
@@ -18,7 +19,6 @@ def conectar_a_mysql(host_name, user_name, user_password, db_name,port):
 
     return connection
 
-# Ejemplo de uso
 if __name__ == '__main__':
     usr = input("User: \t")
     pwd = input("Password: \t")
@@ -26,10 +26,17 @@ if __name__ == '__main__':
         "virtual.lab.inf.uva.es",
         usr,
         pwd,
-        "s1",
-        26122)
+        "f1",
+        26142)
     
     cursor = connection.cursor()
+
+     # Borramos primero
+    delete_sql = "DELETE FROM climatologiaAsturias"
+
+    # Ejecutar la sentencia SQL
+    cursor.execute(delete_sql)
+    
 
 
     url = "https://opendata.aemet.es/opendata/api/valores/climatologicos/mensualesanuales/datos/anioini/2020/aniofin/2020/estacion/1212E"
@@ -50,6 +57,10 @@ if __name__ == '__main__':
         response_datos = requests.get(url_datos)
         datos_api = response_datos.json()
 
+        #Estos datos deberían de aparecer pero no aparecen por lo que los metemos a mano
+        provincia = 'Asturias'
+        nombre = 'Aeropuerto'
+
         for dato in datos_api:
             fecha = dato['fecha']
             indicativo = dato['indicativo']
@@ -65,9 +76,23 @@ if __name__ == '__main__':
             else: 
                 evap = None
             
-            sql = "INSERT INTO f1.climatologiaAsturias VALUES (%s, %s, %s, %s, %s,%s,%s,%s,%s,%s)"
-            val = (fecha, indicativo, tm_mes, tm_max,tm_min,p_mes,p_max,np_010,n_nie,evap)
-            cursor.execute(sql, val)
+
+            sql = "INSERT INTO f1.climatologiaAsturias (fecha, indicativo, nombre, provincia, tm_mes, tm_max, tm_min, p_mes, p_max, np_010, n_nie, evap) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+            #fecha_datetime = datetime.datetime.strptime(fecha + '-01', '%Y-%m-%d')
+
+            # Convert the datetime object back to a string in the format 'YYYY-MM-DD'
+            #formatted_fecha = fecha_datetime.strftime('%Y-%m-%d')
+
+            #print(formatted_fecha)
+
+            val = (fecha, indicativo, nombre, provincia, tm_mes, tm_max,tm_min,p_mes,p_max,np_010,n_nie,evap)
+            try:
+                cursor.execute(sql, val)
+                connection.commit()  # Commit the transaction
+            except Exception as e:
+                print("Error occurred:", e)
+                connection.rollback()  # Rollback the transaction in case of error
 
 
     cursor.close()

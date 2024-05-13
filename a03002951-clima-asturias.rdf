@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF
+  xmlns:dct="http://purl.org/dc/terms/"
+  xmlns:dcat="http://www.w3.org/ns/dcat#"
+  xmlns:schema="http://schema.org/"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+>
+  <dcat:Dataset rdf:about="https://datos.gob.es/catalogo/a03002951-clima-asturias">
+    <dcat:keyword xml:lang="es">AEMET</dcat:keyword>
+    <dct:description xml:lang="es">Informacion sobre las temperaturas medias y extremas (en grados centígrados), las precipitaciones y las horas de sol en Asturias por meses y/o años desde 1990.&#13;
+&#13;
+NOTA: El HTML proporciona acceso a un formulario en el que, tras realizar una búsqueda, podemos visualizar la información de diferentes maneras y descargarla en los formatos PC-Axis, XLSX y CSV.</dct:description>
+    <dcat:keyword xml:lang="es">SADEI</dcat:keyword>
+    <dct:language>es</dct:language>
+    <dcat:keyword xml:lang="es">HVDS</dcat:keyword>
+    <dct:publisher>
+      <skos:Concept rdf:about="http://datos.gob.es/recurso/sector-publico/org/Organismo/A03002951">
+        <skos:prefLabel>Principado de Asturias</skos:prefLabel>
+        <skos:notation>A03002951</skos:notation>
+      </skos:Concept>
+    </dct:publisher>
+    <dct:spatial rdf:resource="http://datos.gob.es/recurso/sector-publico/territorio/Provincia/Asturias"/>
+    <dcat:keyword xml:lang="es">Climatología</dcat:keyword>
+    <dcat:keyword xml:lang="es">Clima</dcat:keyword>
+    <dcat:distribution>
+      <dcat:Distribution rdf:about="https://datos.gob.es/catalogo/a03002951-clima-asturias/resource/a2ad1753-7774-405b-b3ef-d4e856c5983c">
+        <dct:format rdf:resource="https://datos.gob.es/catalogo/a03002951-clima-asturias/resource/a2ad1753-7774-405b-b3ef-d4e856c5983c/format"/>
+        <dct:title xml:lang="es">Clima en Asturias</dct:title>
+        <dcat:accessURL>https://www.sadei.es/sadei/territorio-y-medio-ambiente/climatologia_163_1_ap.html?f=01__04$$010402.px</dcat:accessURL>
+      </dcat:Distribution>
+    </dcat:distribution>
+    <dct:spatial rdf:resource="http://datos.gob.es/recurso/sector-publico/territorio/Autonomia/Principado-Asturias"/>
+    <dcat:theme rdf:resource="http://datos.gob.es/kos/sector-publico/sector/medio-ambiente"/>
+    <dct:title xml:lang="es">Climatología en Asturias: temperaturas, precipitaciones y horas de sol</dct:title>
+    <dct:license rdf:resource="https://creativecommons.org/licenses/by/4.0/deed.es_ES"/>
+    <dct:modified rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2022-01-04T00:00:00+01:00</dct:modified>
+    <dct:temporal>
+      <dct:PeriodOfTime rdf:about="https://datos.gob.es/catalogo/a03002951-clima-asturias/PeriodOfTime-1">
+        <schema:startDate rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">1990-01-01T00:00:00+01:00</schema:startDate>
+      </dct:PeriodOfTime>
+    </dct:temporal>
+  </dcat:Dataset>
+  <dct:IMT rdf:about="https://datos.gob.es/catalogo/a03002951-clima-asturias/resource/a2ad1753-7774-405b-b3ef-d4e856c5983c/format">
+    <rdf:value>text/html</rdf:value>
+    <rdfs:label>HTML</rdfs:label>
+  </dct:IMT>
+</rdf:RDF>
