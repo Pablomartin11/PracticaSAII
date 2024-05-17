@@ -44,6 +44,13 @@ if __name__ == '__main__':
         "f3",
         26142)
     
+    connection4 = conectar_a_mysql(
+        "virtual.lab.inf.uva.es",
+        usr,
+        pwd,
+        "f4",
+        26142)
+    
     connection = conectar_a_mysql(
         "virtual.lab.inf.uva.es",
         usr,
@@ -58,6 +65,8 @@ if __name__ == '__main__':
     
     cursor3 = connection3.cursor()
 
+    cursor4 = connection4.cursor()
+
     cursor = connection.cursor()
 
 
@@ -71,7 +80,6 @@ if __name__ == '__main__':
     cursor3.execute("SELECT provincia, nombreEmbalse FROM ambitoEmbalse")
     datos_f3 = cursor3.fetchall()
 
-    
 
     for fila2 in datos_f2:
         embalse_nombre, fecha1, aguaTotal, aguaActual = fila2
@@ -103,11 +111,95 @@ if __name__ == '__main__':
                         except Exception as e:
                             print("Error occurred:", e)
                             connection.rollback()  # Rollback the transaction in case of error
-
-                
-                
+print("EmbalsesAst terminado")
 
 
 
-    
+
+# TemperaturaAst
+
+try:
+    cursor4.execute("SELECT fecha, estacionClimatologica, tmed, tmed_max, tmed_min FROM temperaturaAsturias")
+    datos_f4 = cursor4.fetchall()
+
+    for fila in datos_f4:
+        fecha, nombre, tmed, tmed_max, tmed_min = fila
+
+        sql = "INSERT INTO temperaturaAst (fecha, nombre, tmed, tmed_max, tmed_min) VALUES (%s, %s, %s, %s, %s)"
+        val = (fecha, nombre, tmed, tmed_max, tmed_min)
+        try:
+                cursor.execute(sql, val)
+                connection.commit()  # Commit the transaction
+        except Exception as e:
+                print("Error occurred:", e)
+                connection.rollback()  # Rollback the transaction in case of error
+
+except Exception :
+    print("Fuente 1")
+    cursor1.execute("SELECT fecha, nombre, tm_mes, tm_max, tm_min FROM climatologiaAsturias")
+    datos_f1 = cursor1.fetchall()                
+
+    for fila in datos_f1:
+        fecha, nombre, tmed, tmed_max, tmed_min = fila
+        # Convertir fecha al formato "2020-01"
+        año, mes = fecha.split('-')
+        if(len(mes))==1:
+            mes = '0'+mes
+                        
+        fecha= f"{año}-{mes}"
+
+
+        sql = "INSERT INTO temperaturaAst (fecha, nombre, tmed, tmed_max, tmed_min) VALUES (%s, %s, %s, %s, %s)"
+        val = (fecha, nombre, tmed, tmed_max, tmed_min)
+        try:
+            cursor.execute(sql, val)
+            connection.commit()  # Commit the transaction
+        except Exception as e:
+            print("Error occurred:", e)
+            connection.rollback()  # Rollback the transaction in case of error
+print("TemperaturasAst terminado")
+
+
+
+
+
+# PreciptacionesAst
+try:
+    cursor4.execute("SELECT fecha, estacionClimatologica, precip FROM temperaturaAsturias")
+    datos_f4 = cursor4.fetchall()
+    for fila in datos_f4:
+        fecha, nombre, precip = fila
+        sql = "INSERT INTO precipitacionesAst (fecha, nombre, precip) VALUES (%s, %s, %s)"
+        val = (fecha, nombre, precip)
+        try:
+            cursor.execute(sql, val)
+            connection.commit()  # Commit the transaction
+        except Exception as e:
+            print("Error occurred:", e)
+            connection.rollback()  # Rollback the transaction in case of error
+
+except Exception:
+    print("fuente 1")
+    cursor1.execute("SELECT fecha, nombre, p_mes FROM climatologiaAsturias")
+    datos_f1 = cursor1.fetchall()                
+
+    for fila in datos_f1:
+        fecha, nombre, precip = fila
+        # Convertir fecha2_str al formato "2020-01"
+        año, mes = fecha.split('-')
+        if(len(mes))==1:
+            mes = '0'+mes
+                        
+        fecha= f"{año}-{mes}"
+
+
+        sql = "INSERT INTO precipitacionesAst (fecha, nombre, precip) VALUES (%s, %s, %s)"
+        val = (fecha, nombre, precip)
+        try:
+            cursor.execute(sql, val)
+            connection.commit()  # Commit the transaction
+        except Exception as e:
+            print("Error occurred:", e)
+            connection.rollback()  # Rollback the transaction in case of error
+print("precipitacionesAst terminado")
     

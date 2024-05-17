@@ -34,7 +34,13 @@ def extraer_provincia(texto):
     else:
         return None
 
-
+def extraer_embalse(texto):
+    # Buscar el patrón "Embalses de [provincia]" y extraer solo el nombre de la provincia
+    match = re.search(r'Embalse de (.*)$', texto)
+    if match:
+        return match.group(1)
+    else:
+        return texto
 
 if __name__ == '__main__':
     usr = input("User: \t")
@@ -49,13 +55,6 @@ if __name__ == '__main__':
 
     cursor = connection.cursor()
 
-    # Borramos primero
-    delete_sql = "DELETE FROM ambitoEmbalse"
-
-    # Ejecutar la sentencia SQL
-    cursor.execute(delete_sql)
-    
-
 
     # Abrir el archivo CSV y leer los datos
     with open('embalsesProvincia.csv', 'r') as csv_file:
@@ -64,13 +63,14 @@ if __name__ == '__main__':
         for row in csv_reader:
             # Expresion regular para obtener la provincia
             prov = extraer_provincia(row[0])
-            cursor.execute('''INSERT INTO ambitoEmbalse (provincia, nombreEmbalse)
-                            VALUES (%s, %s)''', (prov, row[2]))
 
+            emb = extraer_embalse(row[2])
+            try:
+                cursor.execute('''INSERT INTO ambitoEmbalse (provincia, nombreEmbalse)
+                            VALUES (%s, %s)''', (prov, emb))
+                connection.commit()  # Commit the transaction
+            except Exception as e:
+                print("Error occurred:", e)
+                connection.rollback()  # Rollback the transaction in case of error
 
-
-    
-
-    # Guardar los cambios y cerrar la conexión
-    connection.commit()
     connection.close()

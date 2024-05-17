@@ -1,7 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
 import requests
-#import datetime
 
 def conectar_a_mysql(host_name, user_name, user_password, db_name,port):
     connection = None
@@ -30,12 +29,6 @@ if __name__ == '__main__':
         26142)
     
     cursor = connection.cursor()
-
-     # Borramos primero
-    delete_sql = "DELETE FROM climatologiaAsturias"
-
-    # Ejecutar la sentencia SQL
-    cursor.execute(delete_sql)
     
 
 
@@ -75,24 +68,23 @@ if __name__ == '__main__':
                 evap = dato['evap']
             else: 
                 evap = None
+
             
 
             sql = "INSERT INTO f1.climatologiaAsturias (fecha, indicativo, nombre, provincia, tm_mes, tm_max, tm_min, p_mes, p_max, np_010, n_nie, evap) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-
-            #fecha_datetime = datetime.datetime.strptime(fecha + '-01', '%Y-%m-%d')
-
-            # Convert the datetime object back to a string in the format 'YYYY-MM-DD'
-            #formatted_fecha = fecha_datetime.strftime('%Y-%m-%d')
-
-            #print(formatted_fecha)
-
             val = (fecha, indicativo, nombre, provincia, tm_mes, tm_max,tm_min,p_mes,p_max,np_010,n_nie,evap)
+            
             try:
                 cursor.execute(sql, val)
                 connection.commit()  # Commit the transaction
             except Exception as e:
                 print("Error occurred:", e)
                 connection.rollback()  # Rollback the transaction in case of error
+
+
+        
+
+
 
 
     cursor.close()
